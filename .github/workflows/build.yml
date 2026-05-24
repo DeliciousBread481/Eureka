@@ -1,39 +1,52 @@
-name: Build
-on:
-  push:
-    branches:
-      - '1.18.x/*'
-      - '1.19.2/*'
-      - '1.20.1/*'
-  pull_request:
-    types: [ opened, synchronize, reopened ]
-jobs:
-  validate-gradle:
-    name: "Validate Gradle wrapper"
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-        with:
-          submodules: true # Clone with vs-core submodule
-      - uses: gradle/wrapper-validation-action@v1
-
-  test-server:
-    name: Test Server
-    strategy:
-      matrix:
-        serverType: [ 'fabric', 'forge' ]
-    runs-on: ubuntu-latest
-    timeout-minutes: 20 # Fail after 20 minutes
-    steps:
-      - name: Shallow Clone (--recurse-submodules)
-        uses: actions/checkout@v2
-        with:
-          submodules: recursive
-
-      - name: Setup Gradle & Caches
-        uses: "./.github/actions/setup-gradle"
-
-      - name: Test Server
-        uses: ValkyrienSkies/Minecraft-Architectury-Testing@v1.9
-        with:
-          serverType: ${{ matrix.serverType }}
+name: Build  
+  
+on:  
+  push:  
+    branches: [ 1.20.1-1.5.0-beta3-test ]  
+  pull_request:  
+    branches: [ 1.20.1-1.5.0-beta3-test ]  
+  workflow_dispatch:  
+  
+jobs:  
+  build:  
+    runs-on: ubuntu-latest  
+      
+    steps:  
+      - name: Checkout repository  
+        uses: actions/checkout@v4  
+          
+      - name: Set up JDK 17  
+        uses: actions/setup-java@v4  
+        with:  
+          java-version: '17'  
+          distribution: 'temurin'  
+            
+      - name: Setup Gradle  
+        uses: gradle/actions/setup-gradle@v3  
+          
+      - name: Grant execute permission for gradlew  
+        run: chmod +x gradlew  
+          
+      - name: Build with Gradle  
+        run: ./gradlew build --no-daemon  
+          
+      - name: Upload Fabric artifacts  
+        uses: actions/upload-artifact@v4  
+        with:  
+          name: fabric-jar  
+          path: fabric/build/libs/*.jar  
+          if-no-files-found: warn  
+            
+      - name: Upload Forge artifacts  
+        uses: actions/upload-artifact@v4  
+        with:  
+          name: forge-jar  
+          path: forge/build/libs/*.jar  
+          if-no-files-found: warn  
+            
+      - name: Upload Common artifacts  
+        uses: actions/upload-artifact@v4  
+        with:  
+          name: common-jar  
+          path: common/build/libs/*.jar  
+          if-no-files-found: warn

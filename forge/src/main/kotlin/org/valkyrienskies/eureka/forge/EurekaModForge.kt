@@ -27,6 +27,9 @@ class EurekaModForge {
             },
             serverTarget = {}
         )
+        
+        MOD_BUS.addListener(this::onCommonSetup)
+        
         LOADING_CONTEXT.registerExtensionPoint(
             ConfigScreenHandler.ConfigScreenFactory::class.java
         ) {
@@ -44,6 +47,10 @@ class EurekaModForge {
             CreativeTabs.create()
         }
         deferredRegister.register(getModBus())
+    }
+    
+    private fun onCommonSetup(event: FMLCommonSetupEvent) {
+        EurekaMod.init()
     }
 
     companion object {
