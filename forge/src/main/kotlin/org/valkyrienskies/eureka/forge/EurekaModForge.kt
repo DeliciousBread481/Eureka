@@ -8,9 +8,16 @@ import net.minecraftforge.eventbus.api.IEventBus
 import net.minecraftforge.fml.common.Mod
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent
 import net.minecraftforge.registries.DeferredRegister
+import org.valkyrienskies.core.impl.config.VSConfigClass
 import org.valkyrienskies.core.impl.config.VSConfigClass.Companion.getRegisteredConfig
+import org.valkyrienskies.eureka.EurekaBlocks
+import org.valkyrienskies.eureka.EurekaBlockEntities
 import org.valkyrienskies.eureka.EurekaConfig
+import org.valkyrienskies.eureka.EurekaEntities
+import org.valkyrienskies.eureka.EurekaItems
 import org.valkyrienskies.eureka.EurekaMod
+import org.valkyrienskies.eureka.EurekaScreens
+import org.valkyrienskies.eureka.EurekaWeights
 import org.valkyrienskies.eureka.registry.CreativeTabs
 import org.valkyrienskies.mod.common.ValkyrienSkiesMod
 import org.valkyrienskies.mod.compat.clothconfig.VSClothConfig.createConfigScreenFor
