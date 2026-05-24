@@ -6,6 +6,7 @@ import net.minecraft.core.registries.Registries
 import net.minecraftforge.client.ConfigScreenHandler
 import net.minecraftforge.eventbus.api.IEventBus
 import net.minecraftforge.fml.common.Mod
+import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent
 import net.minecraftforge.registries.DeferredRegister
 import org.valkyrienskies.core.impl.config.VSConfigClass.Companion.getRegisteredConfig
 import org.valkyrienskies.eureka.EurekaConfig
