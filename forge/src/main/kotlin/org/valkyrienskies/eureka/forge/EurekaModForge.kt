@@ -11,7 +11,6 @@ import net.minecraftforge.registries.DeferredRegister
 import org.valkyrienskies.core.impl.config.VSConfigClass.Companion.getRegisteredConfig
 import org.valkyrienskies.eureka.EurekaConfig
 import org.valkyrienskies.eureka.EurekaMod
-import org.valkyrienskies.eureka.EurekaMod.init
 import org.valkyrienskies.eureka.registry.CreativeTabs
 import org.valkyrienskies.mod.common.ValkyrienSkiesMod
 import org.valkyrienskies.mod.compat.clothconfig.VSClothConfig.createConfigScreenFor
@@ -22,15 +21,25 @@ import thedarkcolour.kotlinforforge.forge.runForDist
 @Mod(EurekaMod.MOD_ID)
 class EurekaModForge {
     init {
-        runForDist (
+        runForDist(
             clientTarget = {
                 EurekaModForgeClient.registerClient()
             },
             serverTarget = {}
         )
-        
+
         MOD_BUS.addListener(this::onCommonSetup)
-        
+
+        val deferredRegister = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, EurekaMod.MOD_ID)
+        deferredRegister.register("general") {
+            CreativeTabs.create()
+        }
+        deferredRegister.register(getModBus())
+    }
+
+    private fun onCommonSetup(event: FMLCommonSetupEvent) {
+        EurekaMod.init()
+
         LOADING_CONTEXT.registerExtensionPoint(
             ConfigScreenHandler.ConfigScreenFactory::class.java
         ) {
@@ -41,17 +50,6 @@ class EurekaModForge {
                 )
             }
         }
-        init()
-
-        val deferredRegister = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, EurekaMod.MOD_ID)
-        deferredRegister.register("general") {
-            CreativeTabs.create()
-        }
-        deferredRegister.register(getModBus())
-    }
-    
-    private fun onCommonSetup(event: FMLCommonSetupEvent) {
-        EurekaMod.init()
     }
 
     companion object {
