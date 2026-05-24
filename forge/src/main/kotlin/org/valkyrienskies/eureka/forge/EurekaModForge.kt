@@ -28,6 +28,12 @@ class EurekaModForge {
             serverTarget = {}
         )
 
+        EurekaBlocks.register()
+        EurekaBlockEntities.register()
+        EurekaItems.register()
+        EurekaScreens.register()
+        EurekaEntities.register()
+
         MOD_BUS.addListener(this::onCommonSetup)
 
         val deferredRegister = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, EurekaMod.MOD_ID)
@@ -38,7 +44,8 @@ class EurekaModForge {
     }
 
     private fun onCommonSetup(event: FMLCommonSetupEvent) {
-        EurekaMod.init()
+        EurekaWeights.register()
+        VSConfigClass.registerConfig("vs_eureka", EurekaConfig::class.java)
 
         LOADING_CONTEXT.registerExtensionPoint(
             ConfigScreenHandler.ConfigScreenFactory::class.java
